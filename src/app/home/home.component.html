@@ -1,0 +1,64 @@
+<section class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6 mt-6 border border-border">
+    <h2 class="text-2xl font-bold text-main mb-4">Movimientos recientes</h2>
+
+    <div *ngIf="movimientos().length === 0" class="text-zinc-500">
+        No hay movimientos aún 🤷‍♂️
+    </div>
+
+    <!-- Resumen Donut -->
+    <section class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6 mt-6 border border-border">
+        <h2 class="text-2xl font-bold text-main mb-4">Resumen</h2>
+
+        <div *ngIf="movimientos().length > 0" class="flex flex-col items-center">
+            <canvas baseChart [data]="chartData()" [options]="chartOptions" [type]="chartType"
+                class="max-w-xs sm:max-w-sm"></canvas>
+
+            <div class="flex gap-4 mt-4 text-sm">
+                <div class="text-green-600 font-semibold">Ingresos: ${{ totalIngresos() }}</div>
+                <div class="text-red-600 font-semibold">Gastos: ${{ totalGastos() }}</div>
+            </div>
+        </div>
+
+        <div *ngIf="movimientos().length === 0" class="text-zinc-500 mt-4">
+            No hay movimientos aún 🤷‍♂️
+        </div>
+    </section>
+
+    <!-- Gráfico de barras -->
+    <div *ngIf="movimientos().length > 0" class="mt-10">
+        <h3 class="text-xl font-bold text-main mb-4">Evolución mensual</h3>
+
+        <canvas baseChart [type]="chartTypeBarras" [data]="chartDataBarras()" [options]="chartOptionsBarras"
+            class="w-full max-w-3xl mx-auto"></canvas>
+    </div>
+
+
+
+    <!-- Lista de movimientos -->
+    <h3 class="text-xl font-bold text-main mt-8 mb-2">Movimientos recientes</h3>
+
+    <div *ngIf="movimientos().length === 0" class="text-zinc-500">
+        No hay movimientos aún 🤷‍♂️
+    </div>
+
+    <ul *ngIf="movimientos().length > 0" class="space-y-4 mt-4">
+        <li *ngFor="let mov of movimientos()" class="flex justify-between items-center border-b pb-2">
+            <div>
+                <div class="font-semibold">
+                    {{ mov.title }} <span class="text-sm text-zinc-400">({{ mov.category }})</span>
+                </div>
+                <div class="text-xs text-zinc-500">{{ mov.date }}</div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div [ngClass]="mov.type === 'ingreso' ? 'text-green-600' : 'text-red-600'">
+                    {{ mov.type === 'ingreso' ? '+' : '-' }}${{ mov.amount }}
+                </div>
+                <button (click)="eliminar(mov.id)" class="text-red-500 hover:text-red-700 text-sm" title="Eliminar">
+                    🗑️
+                </button>
+            </div>
+        </li>
+
+    </ul>
+</section>

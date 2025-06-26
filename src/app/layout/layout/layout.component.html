@@ -1,0 +1,10 @@
+<app-navbar (openModal)="openModal()" />
+
+<app-add-movement-modal
+  [visible]="showModal()"
+  (close)="closeModal()"
+/>
+
+<main class="p-6 bg-background min-h-[calc(100vh-64px)] text-text">
+  <router-outlet></router-outlet>
+</main>
