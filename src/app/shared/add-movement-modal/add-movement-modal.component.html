@@ -1,66 +1,94 @@
 <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" *ngIf="visible">
-    <div class="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6 border border-border animate-fade-in">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-main">Agregar Movimiento</h2>
-            <button (click)="close.emit()" class="text-zinc-400 hover:text-main text-xl font-bold">&times;</button>
-        </div>
-
-        <form (ngSubmit)="submitForm()" class="flex flex-col gap-4 text-sm">
-            <div class="flex flex-col">
-                <label class="font-semibold mb-1 text-text">Título</label>
-                <input [(ngModel)]="title" name="title" type="text" placeholder="Ej: Sueldo, Pizza, Uber..."
-                    class="border border-border p-2 rounded focus:outline-none focus:ring-2 focus:ring-main" required />
-            </div>
-
-            <div class="flex gap-4">
-                <div class="flex flex-col w-1/2">
-                    <label class="font-semibold mb-1 text-text">Monto</label>
-                    <input [(ngModel)]="amount" name="amount" type="number" placeholder="Ej: 12000"
-                        class="border border-border p-2 rounded focus:outline-none focus:ring-2 focus:ring-main"
-                        required />
-                </div>
-                <div class="flex flex-col w-1/2">
-                    <label class="font-semibold mb-1 text-text">Fecha</label>
-                    <input [(ngModel)]="date" name="date" type="date"
-                        class="border border-border p-2 rounded focus:outline-none focus:ring-2 focus:ring-main cursor-pointer"
-                        required />
-                </div>
-            </div>
-
-            <div class="flex flex-col">
-                <label class="font-semibold mb-1 text-text">Tipo</label>
-                <div class="flex gap-3">
-                    <label class="flex items-center gap-1 cursor-pointer">
-                        <input type="radio" [(ngModel)]="type" name="type" value="ingreso" class="accent-main" />
-                        <span>Ingreso</span>
-                    </label>
-                    <label class="flex items-center gap-1 cursor-pointer">
-                        <input type="radio" [(ngModel)]="type" name="type" value="gasto" class="accent-main" />
-                        <span>Gasto</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="flex flex-col">
-                <label class="font-semibold mb-1 text-text">Categoría</label>
-                <select [(ngModel)]="category" name="category"
-                    class="border border-border p-2 rounded focus:outline-none focus:ring-2 focus:ring-main" required>
-                    <option value="" disabled selected>Seleccioná una categoría</option>
-                    <option value="sueldo">💼 Sueldo</option>
-                    <option value="comida">🍔 Comida</option>
-                    <option value="transporte">🚌 Transporte</option>
-                    <option value="ocio">🎮 Ocio</option>
-                    <option value="salud">💊 Salud</option>
-                    <option value="otros">📦 Otros</option>
-                </select>
-            </div>
-
-            <button type="submit"
-                class="bg-main text-white font-semibold py-2 mt-2 rounded-xl hover:bg-hover transition-all"
-                 [disabled]="!title || !amount || !date || !category  || !type" [ngClass]="{'opacity-50 cursor-not-allowed': !title || !amount || !date || !category || !type}">
-                Guardar Movimiento
-            </button>
-        </form>
-
+  <div class="bg-white dark:bg-zinc-800 text-text dark:text-white rounded-2xl shadow-xl w-[90%] max-w-md p-6 border border-border dark:border-zinc-600 animate-fade-in">
+    <!-- Encabezado -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold text-main">Agregar Movimiento</h2>
+      <button
+        (click)="close.emit()"
+        class="text-zinc-400 hover:text-main text-xl font-bold"
+      >
+        &times;
+      </button>
     </div>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="submitForm()" class="flex flex-col gap-4 text-sm">
+      <div class="flex flex-col">
+        <label class="font-semibold mb-1 text-text">Título</label>
+        <input
+          [(ngModel)]="title"
+          name="title"
+          type="text"
+          placeholder="Ej: Sueldo, Pizza, Uber..."
+          class="border border-border dark:border-zinc-600 dark:bg-zinc-700 dark:text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-main"
+          required
+        />
+      </div>
+
+      <div class="flex gap-4">
+        <div class="flex flex-col w-1/2">
+          <label class="font-semibold mb-1 text-text">Monto</label>
+          <input
+            [(ngModel)]="amount"
+            name="amount"
+            type="number"
+            placeholder="Ej: 12000"
+            class="border border-border dark:border-zinc-600 dark:bg-zinc-700 dark:text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-main"
+            required
+          />
+        </div>
+        <div class="flex flex-col w-1/2">
+          <label class="font-semibold mb-1 text-text">Fecha</label>
+          <input
+            [(ngModel)]="date"
+            name="date"
+            type="date"
+            class="border border-border dark:border-zinc-600 dark:bg-zinc-700 dark:text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-main cursor-pointer"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="font-semibold mb-1 text-text">Tipo</label>
+        <div class="flex gap-3">
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="radio" [(ngModel)]="type" name="type" value="ingreso" class="accent-main" />
+            <span>Ingreso</span>
+          </label>
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="radio" [(ngModel)]="type" name="type" value="gasto" class="accent-main" />
+            <span>Gasto</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="font-semibold mb-1 text-text">Categoría</label>
+        <select
+          [(ngModel)]="category"
+          name="category"
+          class="border border-border dark:border-zinc-600 dark:bg-zinc-700 dark:text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-main"
+          required
+        >
+          <option value="" disabled selected>Seleccioná una categoría</option>
+          <option value="sueldo">💼 Sueldo</option>
+          <option value="comida">🍔 Comida</option>
+          <option value="transporte">🚌 Transporte</option>
+          <option value="ocio">🎮 Ocio</option>
+          <option value="salud">💊 Salud</option>
+          <option value="otros">📦 Otros</option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        class="bg-main text-white font-semibold py-2 mt-2 rounded-xl hover:bg-hover transition-all"
+        [disabled]="!title || !amount || !date || !category || !type"
+        [ngClass]="{ 'opacity-50 cursor-not-allowed': !title || !amount || !date || !category || !type }"
+      >
+        Guardar Movimiento
+      </button>
+    </form>
+  </div>
 </div>

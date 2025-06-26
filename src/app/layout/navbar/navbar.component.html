@@ -1,14 +1,27 @@
-<nav class="bg-main text-white px-6 py-3 shadow-md">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div class="flex items-center gap-2">
-            <span class="text-2xl">💸</span>
-            <h1 class="font-bold text-lg">Finanzas Dashboard</h1>
-        </div>
-
-        <button (click)="openModal.emit()"
-            class="bg-white text-main font-semibold px-4 py-2 rounded-xl border-2 border-white hover:bg-hover hover:text-white transition-all duration-200">
-            + Agregar Movimiento
-        </button>
-
+<nav class="bg-main text-white px-6 py-3 shadow-md dark:bg-zinc-900 transition-all duration-300 ease-in-out">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <!-- Logo + Título -->
+    <div class="flex items-center gap-2">
+      <span class="text-2xl">💸</span>
+      <h1 class="font-bold text-lg">Finanzas Dashboard</h1>
     </div>
+
+    <!-- Botones -->
+    <div class="flex gap-2">
+      <button
+        (click)="openModal.emit()"
+        class="bg-white text-main font-semibold px-4 py-2 rounded-xl border-2 border-white hover:bg-hover hover:text-white transition-all duration-300 ease-in-out dark:bg-zinc-800 dark:text-white dark:border-main dark:hover:bg-main"
+      >
+        + Agregar Movimiento
+      </button>
+
+      <button
+        (click)="toggleDarkMode()"
+        class="text-white hover:text-zinc-200 text-xl"
+        title="Cambiar tema"
+      >
+        🌓
+      </button>
+    </div>
+  </div>
 </nav>
