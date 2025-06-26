@@ -1,12 +1,13 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MovimientosService } from '../shared/services/movimientos.service';
 import { CommonModule } from '@angular/common';
 import { ChartOptions, ChartType, ChartData } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, NgChartsModule],
+  imports: [CommonModule, NgChartsModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -15,11 +16,28 @@ export class HomeComponent {
   movimientos = computed(() => this.service.movimientos());
   // Datos calculados
   totalIngresos = computed(() =>
-    this.movimientos().filter(m => m.type === 'ingreso').reduce((a, b) => a + b.amount, 0)
+    this.movimientosFiltrados().filter(m => m.type === 'ingreso').reduce((a, b) => a + b.amount, 0)
   );
+
   totalGastos = computed(() =>
-    this.movimientos().filter(m => m.type === 'gasto').reduce((a, b) => a + b.amount, 0)
+    this.movimientosFiltrados().filter(m => m.type === 'gasto').reduce((a, b) => a + b.amount, 0)
   );
+
+  selectedMes = signal('todos');
+  selectedMesModel = 'todos'; // para el ngModel
+  // Lista de meses únicos (ej: ["2025-06", "2025-07"])
+  mesesUnicos = computed(() => {
+    const meses = new Set<string>();
+    this.movimientos().forEach(m => meses.add(m.date.slice(0, 7)));
+    return Array.from(meses).sort();
+  });
+
+  // Movimientos filtrados por mes
+  movimientosFiltrados = computed(() => {
+    if (this.selectedMes() === 'todos') return this.movimientos();
+    return this.movimientos().filter(m => m.date.startsWith(this.selectedMes()));
+  });
+
 
   chartData = computed(() => ({
     labels: ['Ingresos', 'Gastos'],
@@ -46,18 +64,26 @@ export class HomeComponent {
   };
 
   chartDataBarras = computed<ChartData<'bar'>>(() => {
-    const meses = Object.keys(this.movimientosPorMes).sort();
+    const datos = this.movimientosFiltrados().reduce((acc, m) => {
+      const mes = m.date.slice(0, 7);
+      if (!acc[mes]) acc[mes] = { ingreso: 0, gasto: 0 };
+      acc[mes][m.type] += m.amount;
+      return acc;
+    }, {} as Record<string, { ingreso: number; gasto: number }>);
+
+    const meses = Object.keys(datos).sort();
+
     return {
       labels: meses.map(m => this.formatMes(m)),
       datasets: [
         {
           label: 'Ingresos',
-          data: meses.map(m => this.movimientosPorMes[m].ingreso),
+          data: meses.map(m => datos[m].ingreso),
           backgroundColor: '#16a34a',
         },
         {
           label: 'Gastos',
-          data: meses.map(m => this.movimientosPorMes[m].gasto),
+          data: meses.map(m => datos[m].gasto),
           backgroundColor: '#dc2626',
         }
       ]
@@ -109,5 +135,10 @@ export class HomeComponent {
     });
 
     return datos;
+  }
+
+  setSelectedMes(value: string) {
+    this.selectedMesModel = value;
+    this.selectedMes.set(value);
   }
 }
