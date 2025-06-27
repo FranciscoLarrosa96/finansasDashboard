@@ -1,4 +1,7 @@
-<section class="max-w-4xl mx-auto bg-white dark:bg-zinc-800 rounded-2xl shadow-lg p-6 mt-6 border border-border dark:border-zinc-700 text-text dark:text-white transition-all duration-300">
+<section
+  class="max-w-4xl mx-auto bg-white dark:bg-zinc-800 rounded-2xl shadow-lg p-6 mt-6 border border-border dark:border-zinc-700 text-text dark:text-white transition-all duration-300"
+  data-aos="fade-up"
+>
   <h2 class="text-2xl font-bold text-main mb-4">Movimientos recientes</h2>
 
   <div *ngIf="movimientos().length === 0" class="text-zinc-500 dark:text-zinc-400 transition-all duration-300">
@@ -21,7 +24,10 @@
   </div>
 
   <!-- Resumen Donut -->
-  <section class="bg-white dark:bg-zinc-800 rounded-2xl shadow-lg p-6 mt-6 border border-border dark:border-zinc-700 transition-all duration-300">
+  <section
+    class="bg-white dark:bg-zinc-800 rounded-2xl shadow-lg p-6 mt-6 border border-border dark:border-zinc-700 transition-all duration-300"
+    data-aos="fade-up"
+  >
     <h2 class="text-2xl font-bold text-main mb-4">Resumen</h2>
 
     <div *ngIf="movimientos().length > 0" class="flex flex-col items-center">
@@ -39,7 +45,7 @@
   </section>
 
   <!-- Gráfico de barras -->
-  <div *ngIf="movimientos().length > 0" class="mt-10">
+  <div *ngIf="movimientos().length > 0" class="mt-10" data-aos="fade-left">
     <h3 class="text-xl font-bold text-main mb-4">Evolución mensual</h3>
     <canvas baseChart [type]="chartTypeBarras" [data]="chartDataBarras()" [options]="chartOptionsBarras"
       class="w-full max-w-3xl mx-auto"></canvas>
@@ -53,7 +59,11 @@
   </div>
 
   <ul *ngIf="movimientosFiltrados().length > 0" class="space-y-4 mt-4">
-    <li *ngFor="let mov of movimientosFiltrados()" class="flex justify-between items-center border-b pb-2 border-border dark:border-zinc-600 transition-all duration-300">
+    <li
+      *ngFor="let mov of movimientosFiltrados(); let i = index"
+      class="flex justify-between items-center border-b pb-2 border-border dark:border-zinc-600 transition-all duration-300"
+      data-aos="fade-right"
+    >
       <div>
         <div class="font-semibold">
           {{ mov.title }}

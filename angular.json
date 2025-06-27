@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+                "node_modules/aos/dist/aos.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -87,6 +88,7 @@
               "src/assets"
             ],
             "styles": [
+                "node_modules/aos/dist/aos.css",
               "src/styles.scss"
             ],
             "scripts": []

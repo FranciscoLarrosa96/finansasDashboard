@@ -40,7 +40,6 @@ export class AddMovementModalComponent {
   private resetForm() {
     this.title = '';
     this.amount = null;
-    this.date = '';
     this.type = 'ingreso';
     this.category = '';
   }
