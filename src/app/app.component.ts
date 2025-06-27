@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import * as AOS from 'aos';
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
@@ -9,6 +10,7 @@ import * as AOS from 'aos';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+  
   title = 'finansas-dashboard';
   isDarkMode = false;
   ngOnInit() {

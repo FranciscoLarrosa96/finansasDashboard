@@ -1,11 +1,14 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Movimiento } from '../interfaces/movimiento.interface';
+import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovimientosService {
+  private firestore = inject(Firestore);
+  private movimientosRef = collection(this.firestore, 'movimientos');
   private _movimientos = signal<Movimiento[]>(this.getFromStorage());
 
   get movimientos() {
@@ -22,6 +25,15 @@ export class MovimientosService {
     const filtrados = this._movimientos().filter(m => m.id !== id);
     this._movimientos.set(filtrados);
     localStorage.setItem('movimientos', JSON.stringify(filtrados));
+  }
+
+  
+  agregarMovimiento(movimiento: any) {
+    return addDoc(this.movimientosRef, movimiento);
+  }
+
+  obtenerMovimientos() {
+    return collectionData(this.movimientosRef, { idField: 'id' });
   }
 
 
