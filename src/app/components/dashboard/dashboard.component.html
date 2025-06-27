@@ -1,0 +1,51 @@
+<div
+    class="min-h-[100dvh] flex items-center justify-center bg-background dark:bg-zinc-900 text-text dark:text-white px-4 transition-all duration-300">
+    <div class="max-w-xl mx-auto mt-20 p-6 rounded-2xl shadow-xl" data-aos="fade-up"
+        style="background-color: var(--main-color); color: white;">
+        <div class="flex items-center gap-4 mb-6">
+            <img *ngIf="user()?.photoURL" [src]="user()?.photoURL" alt="Foto de perfil"
+                class="w-16 h-16 rounded-full shadow-lg" />
+            <div>
+                <h2 class="text-2xl font-bold">
+                    ¡Hola {{ user()?.displayName || 'Usuario' }}! 👋
+                </h2>
+                <p class="text-sm opacity-80">{{ user()?.email }}</p>
+            </div>
+            <div class="absolute top-4 right-4 mt-6 text-end" data-aos="fade-up" data-aos-delay="200">
+                <button (click)="authService.logout()" class="px-4 py-2 rounded-xl font-semibold shadow-lg transition-all
+           text-white bg-white/10 hover:bg-white/20 border border-white border-opacity-30
+           backdrop-blur-sm">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+
+        <p class="text-lg mt-4">
+            Bienvenido a tu panel de control. Acá vas a poder ver el resumen de tus finanzas.
+        </p>
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="300">
+            <!-- Ingresos -->
+            <div class="rounded-xl p-6 shadow-lg text-white 
+    bg-gradient-to-tr from-pink-500 to-fuchsia-600 
+    ring-1 ring-white/20">
+                <p class="text-lg font-semibold">Ingresos</p>
+                <p class="text-3xl mt-2 font-bold">$95.000</p>
+            </div>
+
+
+
+            <!-- Gastos -->
+            <div class="rounded-xl p-6 shadow-lg text-white bg-[var(--secondary-color)]">
+                <p class="text-lg font-semibold">Gastos</p>
+                <p class="text-3xl mt-2 font-bold">$73.500</p>
+            </div>
+
+            <!-- Balance -->
+            <div class="rounded-xl p-6 shadow-lg text-[var(--text-color)] bg-white border border-[var(--border-color)]">
+                <p class="text-lg font-semibold">Balance</p>
+                <p class="text-3xl mt-2 font-bold">$21.500</p>
+            </div>
+        </div>
+
+    </div>
+</div>

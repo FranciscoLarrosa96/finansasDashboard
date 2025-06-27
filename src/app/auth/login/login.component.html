@@ -4,7 +4,8 @@
         data-aos="zoom-in">
         <h2 class="text-2xl font-bold text-main mb-6 text-center">Iniciar sesión</h2>
 
-        <form [formGroup]="loginForm" (ngSubmit)="loginWithEmail()" class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+        <form [formGroup]="loginForm" (ngSubmit)="loginWithEmail()" class="space-y-4" data-aos="fade-up"
+            data-aos-delay="100">
             <div>
                 <label class="block font-semibold mb-1">Email</label>
                 <input type="email" formControlName="email"
@@ -24,6 +25,10 @@
                 class="w-full py-2 bg-main text-white font-semibold rounded-xl hover:bg-hover transition-all">
                 Ingresar
             </button>
+            <!-- mostrar error -->
+            <div data-aos="fade-right" *ngIf="errorMessage" class="text-red-700 text-sm mt-2">
+                {{ errorMessage }}
+            </div>
         </form>
 
         <div class="mt-6 text-center" data-aos="fade-up" data-aos-delay="200">
@@ -34,5 +39,12 @@
                 Google
             </button>
         </div>
+        <p class="text-center mt-4 text-sm">
+            ¿No tenés cuenta?
+            <a routerLink="/register" class="text-[var(--main-color)] font-medium hover:underline">
+                Registrate acá
+            </a>
+        </p>
+
     </div>
 </div>
