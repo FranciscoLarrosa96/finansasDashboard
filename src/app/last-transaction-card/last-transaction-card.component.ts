@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, input, Input, OnInit } from '@angular/core';
+import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { Transaccion } from '../shared/interfaces/transaction.interface';
-import { Observable } from 'rxjs';
 import { AuthService } from '../shared/services/auth.service';
 import { DashboardSvc } from '../shared/services/dashboard.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Firestore } from '@angular/fire/firestore';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-last-transaction-card',
@@ -61,16 +61,80 @@ export class LastTransactionCardComponent implements OnInit {
     const ref = doc(this.firestore, `usuarios/${userId}/transacciones/${this.transaccionId}`);
     await updateDoc(ref, this.form.value);
     this.cerrarModal();
+    Swal.fire({
+      title: '¡Transacción actualizada!',
+      showClass: {
+        popup: `
+        animate__animated
+        animate__fadeInUp
+        animate__faster
+      `
+      },
+      hideClass: {
+        popup: `
+        animate__animated
+        animate__fadeOutDown
+        animate__faster
+      `
+      },
+      text: 'Los cambios se guardaron correctamente.',
+      icon: 'success',
+      confirmButtonColor: '#dd0e7c',
+      confirmButtonText: 'Aceptar',
+      background: '#fff',
+      color: '#27272a'
+    });
+
     // Podés recargar la última transacción si querés
     this.dashboardService.getUltimaTransaccion(userId!).subscribe();
   }
 
   async eliminarTransaccion() {
-    const userId = this.authSvc.user()?.uid;
-    const ref = doc(this.firestore, `usuarios/${userId}/transacciones/${this.transaccionId}`);
-    await deleteDoc(ref);
-    this.cerrarModal();
-    // Podés recargar datos si querés
+    Swal.fire({
+      title: '¿Eliminar transacción?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dd0e7c',
+      cancelButtonColor: '#6b1d68',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      background: '#fff',
+      color: '#27272a'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const userId = this.authSvc.user()?.uid;
+        const ref = doc(this.firestore, `usuarios/${userId}/transacciones/${this.transaccionId}`);
+        await deleteDoc(ref);
+        // Aquí podrías actualizar la lista de transacciones o recargar la última transacción
+        this.dashboardService.getUltimaTransaccion(userId!).subscribe();
+        Swal.fire({
+          title: '¡Eliminada!',
+          showClass: {
+            popup: `
+      animate__animated
+      animate__fadeInUp
+      animate__faster
+    `
+          },
+          hideClass: {
+            popup: `
+      animate__animated
+      animate__fadeOutDown
+      animate__faster
+    `
+          },
+          text: 'La transacción fue eliminada.',
+          icon: 'success',
+          confirmButtonColor: '#dd0e7c',
+          confirmButtonText: 'Aceptar',
+        });
+        this.cerrarModal();
+      }
+    });
+
+
+
   }
 
 }

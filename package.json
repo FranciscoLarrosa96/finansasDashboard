@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^19.2.14",
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
     "@angular/core": "^19.2.0",
@@ -21,10 +22,12 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "angular-cli-ghpages": "^2.0.3",
+    "animate.css": "^4.1.1",
     "aos": "^2.3.4",
     "chart.js": "^4.5.0",
     "firebase": "^11.9.1",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.22.1",
     "tslib": "^2.3.0",
     "uuid": "^11.1.0",
     "zone.js": "~0.15.0"
