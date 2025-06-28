@@ -2,7 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { Auth, signInWithPopup, GoogleAuthProvider, signOut, User, authState } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { environment } from '../../../environments/environment';
 import { initializeApp } from 'firebase/app';
 
@@ -21,14 +21,8 @@ export class AuthService {
     readonly isLoggedIn = computed(() => this.user() !== null);
 
     constructor() {
-        // Log opcional para debug
         authState(this.auth).subscribe(user => {
             this.userSignal.set(user);
-            if (user) {
-                console.log('Usuario logueado:', user);
-            } else {
-                console.log('No hay usuario logueado');
-            }
         });
     }
 
@@ -37,12 +31,11 @@ export class AuthService {
         const result = await signInWithPopup(this.auth, provider);
         const user = result.user;
 
-        // Verificamos si ya tiene un doc en Firestore
         const userRef = doc(this.db, 'usuarios', user.uid);
         const docSnap = await getDoc(userRef);
 
         if (!docSnap.exists()) {
-            // Si no existe, lo creamos
+            // Creamos el doc de usuario
             await setDoc(userRef, {
                 email: user.email,
                 nombre: user.displayName || 'Sin nombre',
@@ -50,6 +43,9 @@ export class AuthService {
                 gastos: 0,
                 creadoEn: new Date()
             });
+
+            // Creamos una transacción inicial
+            await this.crearTransaccionInicial(user.uid);
         }
 
         return result;
@@ -76,9 +72,12 @@ export class AuthService {
         });
     }
 
-    register(email: string, password: string): Promise<any> {
-        return createUserWithEmailAndPassword(this.auth, email, password);
+    async register(email: string, password: string): Promise<UserCredential> {
+        const cred = await createUserWithEmailAndPassword(this.auth, email, password);
+        await this.createUserInFirestore(cred.user);
+        return cred;
     }
+
 
     async createUserInFirestore(user: any) {
         const userRef = doc(this.db, 'usuarios', user.uid);
@@ -88,6 +87,20 @@ export class AuthService {
             ingresos: 0,
             gastos: 0,
             creadoEn: new Date()
+        });
+
+        await this.crearTransaccionInicial(user.uid);
+    }
+
+
+
+    private async crearTransaccionInicial(userId: string) {
+        const transaccionesRef = collection(this.db, 'usuarios', userId, 'transacciones');
+        await addDoc(transaccionesRef, {
+            descripcion: 'Transacción inicial',
+            tipo: 'ingreso',
+            monto: 0,
+            fecha: new Date()
         });
     }
 }

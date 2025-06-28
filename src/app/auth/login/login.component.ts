@@ -23,8 +23,8 @@ export class LoginComponent {
   private authService = inject(AuthService);
   constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ['test22@gmail.com', [Validators.required, Validators.email]],
+      password: ['123456', Validators.required],
     });
   }
 
@@ -51,7 +51,6 @@ export class LoginComponent {
 
     const methods = await fetchSignInMethodsForEmail(auth, email);
     const isGoogleAccount = methods.includes('google.com') && !methods.includes('password');
-    console.log('Métodos:', methods);
 
     if (isGoogleAccount) {
       this.errorMessage = 'Este usuario está registrado con Google. Ingresá con Google.';

@@ -39,10 +39,22 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  /**
+   * Get the last transaction for a user
+   * @param uid 
+   */
   getLastTransaction(uid: string) {
-    this.dashboardService.getUltimaTransaccion(uid).subscribe((transaccion) => {
-      this.lastTransaction = transaccion;
-    });
+    this.dashboardService.getUltimaTransaccion(uid)
+      .subscribe(
+        {
+          next: (transaction: Transaccion | null) => {
+            this.lastTransaction = transaction;
+          },
+          error: (error) => {
+            console.error('Error al obtener la última transacción:', error);
+          }
+        }
+      );
   }
 
 

@@ -1,5 +1,5 @@
 <div
-    class="py-4 min-h-[100dvh] flex items-center justify-center bg-background dark:bg-zinc-900 text-text dark:text-white px-4 transition-all duration-300">
+    class="py-4 min-h-[100dvh] flex gap-4 flex-col items-center justify-center bg-background dark:bg-zinc-900 text-text dark:text-white px-4 transition-all duration-300">
     <div class="max-w-xl mx-auto p-6 rounded-2xl shadow-xl" data-aos="fade-up"
         style="background-color: var(--main-color); color: white;">
         <div class="flex items-center gap-4 mb-6">
@@ -46,9 +46,8 @@
                 <p class="text-3xl mt-2 font-bold">$21.500</p>
             </div>
         </div>
-
     </div>
 
-    <!-- Ultimo  -->
+    <!-- Last Transaction -->
     <app-last-transaction-card [transaction]="this.lastTransaction"></app-last-transaction-card>
 </div>

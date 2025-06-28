@@ -1,17 +1,91 @@
-<section class="mb-6" data-aos="fade-up" data-aos-delay="400">
-  <div class="p-4 rounded-2xl shadow-md bg-white text-black">
-    <h3 class="text-lg font-semibold mb-2">Última transacción</h3>
-    <ng-container *ngIf="transaction">
-      <p class="text-sm">{{ transaction()?.descripcion }}</p>
-      <p class="text-xl font-bold"
-         [class.text-green-600]="transaction()?.tipo === 'ingreso'"
-         [class.text-red-600]="transaction()?.tipo === 'gasto'">
-         {{ transaction()?.tipo === 'ingreso' ? '+' : '-' }} ${{ transaction()?.monto }}
-      </p>
-      <p class="text-xs text-gray-500">{{ transaction()?.fecha?.toDate() | date: 'medium' }}</p>
-    </ng-container>
-    <ng-container *ngIf="(true)">
-      <p class="text-sm text-gray-400">No hay transacciones aún.</p>
-    </ng-container>
+<section class="mb-6 max-w-xl min-w-[288px] w-full" data-aos="fade-up">
+  <button *ngIf="transaction()" (click)="abrirModalEditar(transaction())"
+    class="absolute top-4 right-4 bg-white/10 hover:bg-white/20 p-2 rounded-full text-white" title="Editar">
+    <i class="fa-solid fa-pen-to-square"></i>
+  </button>
+
+
+  <div class="p-6 rounded-2xl shadow-xl text-white flex items-center gap-4" [ngClass]="{
+      'bg-gradient-to-tr from-pink-500 to-fuchsia-600': transaction()?.tipo === 'ingreso',
+      'bg-[var(--secondary-color)]': transaction()?.tipo === 'gasto'
+    }">
+    <div class="text-3xl">
+      <i [ngClass]="{
+          'fa-solid fa-arrow-up-right-dots': transaction()?.tipo === 'ingreso',
+          'fa-solid fa-arrow-down': transaction()?.tipo === 'gasto'
+        }"></i>
+    </div>
+
+    <div class="flex-1">
+      <h3 class="text-lg font-bold mb-1">Última transacción</h3>
+
+      <ng-container *ngIf="transaction() as trans">
+        <p class="text-sm truncate max-w-full block">{{ trans.descripcion }}</p>
+
+        <p class="text-2xl font-bold my-1">
+          {{ trans.tipo === 'ingreso' ? '+' : '-' }}${{ trans.monto }}
+        </p>
+
+        <p class="text-xs text-white/70">
+          {{ trans.fecha?.toDate() | date: 'medium' }}
+        </p>
+
+        <p *ngIf="trans.descripcion === 'Transacción inicial'" class="text-sm text-white/60 italic mt-1">
+          No hay transacciones reales aún.
+        </p>
+      </ng-container>
+
+      <ng-container *ngIf="!transaction()">
+        <p class="text-sm text-white/60 italic">No hay transacciones aún.</p>
+      </ng-container>
+    </div>
   </div>
 </section>
+
+<!-- Overlay -->
+<div *ngIf="modalAbierto" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <!-- Modal -->
+  <div class="bg-white text-[var(--text-color)] p-6 rounded-2xl shadow-2xl max-w-md w-full relative animate-fade-in">
+    <h2 class="text-xl font-bold mb-4">Editar transacción</h2>
+
+    <form [formGroup]="form" (ngSubmit)="guardarCambios()" class="space-y-4">
+      <label class="block">
+        <span class="text-sm font-medium">Descripción</span>
+        <input formControlName="descripcion" type="text"
+          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-[var(--main-color)]" />
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium">Monto</span>
+        <input formControlName="monto" type="number"
+          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-[var(--main-color)]" />
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium">Tipo</span>
+        <select formControlName="tipo"
+          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-[var(--main-color)]">
+          <option value="ingreso">Ingreso</option>
+          <option value="gasto">Gasto</option>
+        </select>
+      </label>
+
+      <div class="flex justify-end gap-3 pt-4">
+        <button type="button" (click)="eliminarTransaccion()"
+          class="px-4 py-2 rounded-xl text-sm font-semibold text-red-600 hover:text-red-800 transition border border-red-300">
+          Eliminar
+        </button>
+        <button type="button" (click)="cerrarModal()"
+          class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:text-gray-700 transition">
+          Cancelar
+        </button>
+
+        <button [ngClass]="{'opacity-50': form.invalid}" [disabled]="form.invalid" type="submit"
+          class="px-5 py-2 rounded-xl text-white bg-[var(--main-color)] hover:bg-[var(--hover-color)] font-semibold shadow transition">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
