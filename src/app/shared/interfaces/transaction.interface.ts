@@ -3,5 +3,6 @@ export interface Transaccion {
   monto: number;
   tipo: 'ingreso' | 'gasto';
   descripcion: string;
-  fecha: any; // o Timestamp si usás Firestore directamente
+  fecha: any; // o Timestamp si usás Firestore directamente,
+  categoria: string;
 }

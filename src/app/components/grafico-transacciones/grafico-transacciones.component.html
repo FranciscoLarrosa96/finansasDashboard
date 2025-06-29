@@ -1,0 +1,57 @@
+<!-- Skeleton loader mientras carga -->
+<!-- <ngx-skeleton-loader
+  *ngIf="!chartOptions"
+  count="1"
+  appearance="line"
+  [theme]="{
+    height: '350px',
+    'border-radius': '1rem',
+    'margin-top': '1rem'
+  }"
+></ngx-skeleton-loader> -->
+
+<!-- Gráfico cuando esté listo -->
+
+<div
+  class="grid grid-cols-1  gap-6 max-w-6xl mx-auto p-4 sm:p-6"
+  data-aos="fade-up"
+  data-aos-delay="300"
+>
+  <!-- Gráfico de barras -->
+  <div
+    class="bg-white rounded-2xl shadow-xl p-4 border border-[var(--border-color)]"
+  >
+    <h2 class="text-lg font-bold text-[var(--text-color)] mb-4">
+      Historial mensual
+    </h2>
+    <apx-chart
+      [series]="chartBarSeries"
+      [chart]="chartBarOptions.chart!"
+      [xaxis]="chartBarOptions.xaxis!"
+      [colors]="['#10b981', '#ef4444']" 
+      [stroke]="{ width: 2 }"
+      [dataLabels]="{ enabled: false }"
+      [legend]="{ position: 'bottom' }"
+      [grid]="{ strokeDashArray: 5 }"
+      height="300"
+    ></apx-chart>
+  </div>
+
+  <!-- Gráfico Donut -->
+  <div
+    class="bg-white rounded-2xl shadow-xl p-4 border border-[var(--border-color)]"
+  >
+    <h2 class="text-lg font-bold text-[var(--text-color)] mb-4">
+      Distribución de gastos
+    </h2>
+    <apx-chart
+      [series]="chartDonutSeries"
+      [labels]="chartDonutLabels"
+      [chart]="chartDonutOptions.chart!"
+      [legend]="chartDonutOptions.legend!"
+      [responsive]="chartDonutOptions.responsive!"
+      [dataLabels]="{ enabled: true }"
+      height="300"
+    ></apx-chart>
+  </div>
+</div>

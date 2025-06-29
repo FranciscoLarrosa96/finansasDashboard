@@ -5,10 +5,14 @@ import { LastTransactionCardComponent } from '../../last-transaction-card/last-t
 import { Transaccion } from '../../shared/interfaces/transaction.interface';
 import { DashboardSvc } from '../../shared/services/dashboard.service';
 import { User } from 'firebase/auth';
+import { GraficoTransaccionesComponent } from '../grafico-transacciones/grafico-transacciones.component';
+import { ListadoTransaccionesComponent } from '../listado-transacciones/listado-transacciones.component';
+import { ModalTransaccionComponent } from '../modal-transaccion/modal-transaccion.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, LastTransactionCardComponent],
+  imports: [CommonModule, NgxSkeletonLoaderModule, LastTransactionCardComponent, GraficoTransaccionesComponent, ListadoTransaccionesComponent, ModalTransaccionComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -26,7 +30,7 @@ export class DashboardComponent implements OnInit {
     }
 
   });
-
+  modalAbierto = false;
   user: User = {} as User;
 
   authService = inject(AuthService);
@@ -57,5 +61,16 @@ export class DashboardComponent implements OnInit {
       );
   }
 
+  abrirModalCrear() {
+    this.modalAbierto = true;
+  }
+
+  recargarDashboard() {
+    this.modalAbierto = false;
+    this.dashboardService.getTransaccionesPorUsuario(this.user.uid)
+      .then(transacciones => {
+        console.log('Transacciones recargadas:', transacciones)
+      });
+  }
 
 }

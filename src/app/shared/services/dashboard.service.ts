@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { Transaccion } from "../interfaces/transaction.interface";
-import { collection, DocumentData, limit, orderBy, query } from "firebase/firestore";
+import { collection, DocumentData, limit, orderBy, query, getDocs } from "firebase/firestore";
 import { collectionData } from "@angular/fire/firestore";
 import { Firestore } from '@angular/fire/firestore';
 
@@ -21,5 +21,10 @@ export class DashboardSvc {
             map((transacciones: any[]) => transacciones[0] as Transaccion || null)
         );
 
+    }
+
+    getTransaccionesPorUsuario(uid: string) {
+        const transRef = collection(this.firestore, `usuarios/${uid}/transacciones`);
+        return getDocs(transRef);
     }
 }

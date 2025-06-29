@@ -49,5 +49,36 @@
     </div>
 
     <!-- Last Transaction -->
+    @if(!lastTransaction) {
+    <!-- Skeleton loader mientras carga -->
+    <ngx-skeleton-loader data-aos="fade-up" count="1" appearance="line" [theme]="{
+    width: '334px',
+    height: '156px',
+    'border-radius': '1rem',
+    'margin-top': '1rem'
+    }">
+    </ngx-skeleton-loader>
+    } @else {
     <app-last-transaction-card [transaction]="this.lastTransaction"></app-last-transaction-card>
+    }
+    <app-grafico-transacciones></app-grafico-transacciones>
+    <!-- CRUD de transacciones -->
+    <section class="max-w-4xl w-full mx-auto mt-8 space-y-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="flex items-start gap-4">
+            <div>
+                <h2 class="text-2xl font-extrabold text-[var(--text-color)] dark:text-white">📊 Transacciones</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Visualizá y gestioná tus ingresos y gastos fácilmente.
+                </p>
+            </div>
+        </div>
+
+
+        <app-listado-transacciones></app-listado-transacciones>
+    </section>
+
+    <!-- Modal para crear transacción -->
+    <app-modal-transaccion *ngIf="modalAbierto" [modo]="'crear'" (cerrar)="modalAbierto = false"
+        (guardado)="recargarDashboard()"></app-modal-transaccion>
+
 </div>

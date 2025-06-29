@@ -7,13 +7,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Firestore } from '@angular/fire/firestore';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-last-transaction-card',
   templateUrl: './last-transaction-card.component.html',
   styleUrls: ['./last-transaction-card.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgApexchartsModule],
 })
 export class LastTransactionCardComponent implements OnInit {
   transaction = input<Transaccion | null>();

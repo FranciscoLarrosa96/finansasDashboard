@@ -1,4 +1,4 @@
-<section class="mb-6 max-w-xl min-w-[288px] w-full" data-aos="fade-up">
+<section class="mb-6 max-w-xl min-w-[334px] w-full" data-aos="fade-up">
   <button *ngIf="transaction()" (click)="abrirModalEditar(transaction())"
     class="absolute top-4 right-4 bg-white/10 hover:bg-white/20 p-2 rounded-full text-white" title="Editar">
     <i class="fa-solid fa-pen-to-square"></i>
@@ -43,7 +43,7 @@
 </section>
 
 <!-- Overlay -->
-<div *ngIf="modalAbierto" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+<div *ngIf="modalAbierto" class="px-4 fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
   <!-- Modal -->
   <div class="bg-white text-[var(--text-color)] p-6 rounded-2xl shadow-2xl max-w-md w-full relative animate-fade-in">

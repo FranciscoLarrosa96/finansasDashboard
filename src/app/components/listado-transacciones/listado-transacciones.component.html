@@ -1,0 +1,50 @@
+<section class="space-y-4">
+    <div class="flex justify-end mb-4">
+        <button (click)="abrirModal()"
+            class="bg-[var(--main-color)] text-white px-4 py-2 rounded-xl hover:bg-[var(--hover-color)] transition shadow">
+            + Nueva transacción
+        </button>
+    </div>
+
+    <div *ngIf="transacciones.length > 0; else sinDatos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let trans of transacciones; let i = index"
+            class="rounded-2xl p-6 shadow-xl relative text-white overflow-hidden" [ngClass]="{
+        'bg-gradient-to-tr from-pink-500 to-fuchsia-600': trans.tipo === 'ingreso',
+        'bg-[var(--secondary-color)]': trans.tipo === 'gasto'
+      }" data-aos="fade-up" [attr.data-aos-delay]="i * 100">
+            <!-- Título -->
+            <p class="text-sm opacity-80 font-medium mb-1">
+                {{ trans.tipo === 'ingreso' ? 'Ingreso' : 'Gasto' }}
+            </p>
+
+            <!-- Descripción -->
+            <p class="text-xl font-bold truncate">{{ trans.descripcion }}</p>
+
+            <!-- Monto -->
+            <p class="text-3xl font-extrabold mt-2">
+                {{ trans.tipo === 'ingreso' ? '+' : '-' }}${{ trans.monto }}
+            </p>
+
+            <!-- Fecha -->
+            <p class="text-xs mt-1 opacity-80">
+                {{ trans.fecha?.toDate() | date: 'medium' }}
+            </p>
+
+            <!-- Acciones -->
+            <div class="absolute top-4 right-4 flex gap-3">
+                <button (click)="abrirModal(trans)" class="text-white hover:scale-110 transition">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button (click)="eliminar(trans.id!)" class="text-white hover:scale-110 transition">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #sinDatos>
+        <p class="text-gray-500 text-sm text-center mt-4">No hay transacciones aún.</p>
+    </ng-template>
+</section>
+<app-modal-transaccion *ngIf="modalAbierto" [transaccion]="transaccionEditando" (cerrar)="modalAbierto = false"
+    (guardado)="cargarTransacciones()">

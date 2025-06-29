@@ -100,7 +100,8 @@ export class AuthService {
             descripcion: 'Transacción inicial',
             tipo: 'ingreso',
             monto: 0,
-            fecha: new Date()
+            fecha: new Date(),
+            categoria: 'Inicial',
         });
     }
 }
