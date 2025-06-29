@@ -1,44 +1,48 @@
-<!-- Overlay -->
-<div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-  <div class="bg-white text-[var(--text-color)] p-6 rounded-2xl shadow-xl w-full max-w-md relative animate-fade-in">
-    <h2 class="text-xl font-bold mb-4">
-      {{ transaccion?.id ? 'Editar transacción' : 'Nueva transacción' }}
-    </h2>
+<!-- Modal flotante centrado sin overlay -->
+<div class="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 p-4 w-full max-w-md animate-fade-in">
+    <div class="bg-white text-[var(--text-color)] p-6 rounded-2xl shadow-xl w-full">
+        <h2 class="text-xl font-bold mb-4">
+            {{ transaccion?.id ? 'Editar transacción' : 'Nueva transacción' }}
+        </h2>
 
-    <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-4">
-      <label class="block">
-        <span class="text-sm font-medium">Descripción</span>
-        <input formControlName="descripcion" type="text"
-          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]" />
-      </label>
+        <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-4">
+            <label class="block">
+                <span class="text-sm font-medium">Descripción</span>
+                <input formControlName="descripcion" type="text"
+                    class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]" />
+            </label>
 
-      <label class="block">
-        <span class="text-sm font-medium">Monto</span>
-        <input formControlName="monto" type="number"
-          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]" />
-      </label>
+            <label class="block">
+                <span class="text-sm font-medium">Monto</span>
+                <input formControlName="monto" type="number"
+                    class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]" />
+            </label>
 
-      <label class="block">
-        <span class="text-sm font-medium">Tipo</span>
-        <select formControlName="tipo"
-          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]">
-          <option value="ingreso">Ingreso</option>
-          <option value="gasto">Gasto</option>
-        </select>
-      </label>
+            <label class="block">
+                <span class="text-sm font-medium">Tipo</span>
+                <select formControlName="tipo"
+                    class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]">
+                    <option value="ingreso">Ingreso</option>
+                    <option value="gasto">Gasto</option>
+                </select>
+            </label>
 
-      <label class="block">
-        <span class="text-sm font-medium">Categoría</span>
-        <input formControlName="categoria" type="text"
-          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]" />
-      </label>
+            <label class="block">
+                <span class="text-sm font-medium">Categoría</span>
+                <select formControlName="categoria"
+                    class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]">
+                    <option *ngFor="let c of categorias" [value]="c.value">
+                        {{ c.icon }} {{ c.label }}
+                    </option>
+                </select>
+            </label>
 
-      <div class="flex justify-end gap-2 pt-4">
-        <button type="button" (click)="cerrar.emit()"
-          class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:text-gray-700">Cancelar</button>
-        <button type="submit"
-          class="px-5 py-2 rounded-xl text-white bg-[var(--main-color)] hover:bg-[var(--hover-color)] font-semibold shadow">Guardar</button>
-      </div>
-    </form>
-  </div>
+            <div class="flex justify-end gap-2 pt-4">
+                <button type="button" (click)="cerrar.emit()"
+                    class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:text-gray-700">Cancelar</button>
+                <button type="submit"
+                    class="px-5 py-2 rounded-xl text-white bg-[var(--main-color)] hover:bg-[var(--hover-color)] font-semibold shadow">Guardar</button>
+            </div>
+        </form>
+    </div>
 </div>

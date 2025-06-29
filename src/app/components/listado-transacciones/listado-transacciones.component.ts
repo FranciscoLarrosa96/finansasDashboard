@@ -40,6 +40,10 @@ export class ListadoTransaccionesComponent implements OnInit {
   async ngOnInit() {
   }
 
+  /**
+   * Carga las transacciones del usuario
+   * @param uid 
+   */
   async cargarTransacciones(uid: string = this.user.uid) {
     const ref = collection(this.db, 'usuarios', uid, 'transacciones');
     const q = query(ref, orderBy('fecha', 'desc')); // 👈 orden por fecha descendente

@@ -6,6 +6,7 @@ import { addDoc, collection, doc, getFirestore, updateDoc } from 'firebase/fires
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../shared/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-transaccion',
@@ -14,6 +15,18 @@ import { AuthService } from '../../shared/services/auth.service';
   styleUrl: './modal-transaccion.component.scss'
 })
 export class ModalTransaccionComponent {
+  categorias = [
+  { label: 'Comida', value: 'Comida', icon: '🍔' },
+  { label: 'Transporte', value: 'Transporte', icon: '🚌' },
+  { label: 'Sueldo', value: 'Sueldo', icon: '💸' },
+  { label: 'Juegos', value: 'Juegos', icon: '🎮' },
+  { label: 'Alquiler', value: 'Alquiler', icon: '🏠' },
+  { label: 'Educación', value: 'Educación', icon: '📚' },
+  { label: 'Salud', value: 'Salud', icon: '🩺' },
+  { label: 'Compras', value: 'Compras', icon: '🛍️' },
+  { label: 'Sin categoría', value: 'Sin categoría', icon: '❓' }
+];
+
   app = initializeApp(environment.firebaseConfig);
   db = getFirestore(this.app);
   
@@ -35,6 +48,9 @@ export class ModalTransaccionComponent {
     });
   }
 
+  /**
+   * Guarda la transacción en Firestore
+   */
   async guardar() {
     const data = {
       ...this.form.value,
@@ -49,6 +65,13 @@ export class ModalTransaccionComponent {
       await addDoc(ref, data);
     }
     this.guardado.emit();
+    Swal.fire({
+      icon: 'success',
+      title: 'Transacción guardada',
+      text: 'La transacción se ha guardado correctamente.',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#dd0e7c',
+    });
 
     this.cerrar.emit();
   }

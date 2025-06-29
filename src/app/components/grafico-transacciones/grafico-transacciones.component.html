@@ -1,14 +1,4 @@
-<!-- Skeleton loader mientras carga -->
-<!-- <ngx-skeleton-loader
-  *ngIf="!chartOptions"
-  count="1"
-  appearance="line"
-  [theme]="{
-    height: '350px',
-    'border-radius': '1rem',
-    'margin-top': '1rem'
-  }"
-></ngx-skeleton-loader> -->
+
 
 <!-- Gráfico cuando esté listo -->
 
@@ -33,6 +23,7 @@
       [dataLabels]="{ enabled: false }"
       [legend]="{ position: 'bottom' }"
       [grid]="{ strokeDashArray: 5 }"
+      [colors]="chartBarOptions.colors!"
       height="300"
     ></apx-chart>
   </div>
@@ -51,6 +42,7 @@
       [legend]="chartDonutOptions.legend!"
       [responsive]="chartDonutOptions.responsive!"
       [dataLabels]="{ enabled: true }"
+      [colors]="chartDonutOptions.colors!"
       height="300"
     ></apx-chart>
   </div>
