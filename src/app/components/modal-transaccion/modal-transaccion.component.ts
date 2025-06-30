@@ -24,6 +24,8 @@ export class ModalTransaccionComponent {
   { label: 'Educación', value: 'Educación', icon: '📚' },
   { label: 'Salud', value: 'Salud', icon: '🩺' },
   { label: 'Compras', value: 'Compras', icon: '🛍️' },
+  { label: 'Tarjeta de crédito', value: 'Tarjeta de crédito', icon: '💳' },
+  { label: 'Préstamos', value: 'Préstamos', icon: '🏦' },
   { label: 'Sin categoría', value: 'Sin categoría', icon: '❓' }
 ];
 

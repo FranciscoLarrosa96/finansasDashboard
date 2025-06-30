@@ -35,6 +35,9 @@
     <h2 class="text-lg font-bold text-[var(--text-color)] mb-4">
       Distribución de gastos
     </h2>
+    @if(!chartDonutOptions.labels || chartDonutOptions.labels.length === 0) {
+    <p class="text-sm text-gray-500">No hay datos suficientes para mostrar el gráfico.</p>
+    }
     <apx-chart
       [series]="chartDonutSeries"
       [labels]="chartDonutLabels"
