@@ -178,13 +178,21 @@ export class GraficoTransaccionesComponent implements OnInit {
           legend: {
             position: 'bottom'
           },
-          responsive: [{
+          responsive: [
+            {
+              breakpoint: 375,
+              options: {
+                chart: { width: 240 },
+              }
+            },
+            {
             breakpoint: 480,
             options: {
               chart: { width: 300 },
               legend: { position: 'bottom' }
             }
-          }]
+          }
+        ]
         };
       });
   }
