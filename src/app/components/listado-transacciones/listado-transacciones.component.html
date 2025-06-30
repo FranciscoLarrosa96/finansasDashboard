@@ -16,7 +16,7 @@
 
             <!-- Monto -->
             <p class="text-3xl font-extrabold mt-2">
-                {{ trans.tipo === 'ingreso' ? '+' : '-' }}${{ trans.monto }}
+                {{ trans.tipo === 'ingreso' ? '+' : '-' }}${{ trans.monto | number }}
             </p>
 
             <!-- Fecha -->

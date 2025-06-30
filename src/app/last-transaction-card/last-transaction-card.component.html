@@ -24,7 +24,7 @@
         <p class="text-sm truncate max-w-full block">{{ trans.descripcion }}</p>
 
         <p class="text-2xl font-bold my-1">
-          {{ trans.tipo === 'ingreso' ? '+' : '-' }}${{ trans.monto }}
+          {{ trans.tipo === 'ingreso' ? '+' : '-' }}${{ trans.monto | number }}
         </p>
 
         <p class="text-xs text-white/70">

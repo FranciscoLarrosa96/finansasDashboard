@@ -28,6 +28,13 @@ export class DashboardComponent implements OnInit {
     if (this.user.uid !== undefined) {
       const uid = this.user.uid;
       this.getLastTransaction(uid);
+      this.loadTotalesFinancieros(uid); // Load financial totals when user is loaded
+    }
+  });
+
+  updateValues = effect(() => {
+    if (this.dashboardService.refreshTransactionsComputed()) {
+      this.loadTotalesFinancieros(this.user.uid);
     }
   });
 
@@ -39,6 +46,9 @@ export class DashboardComponent implements OnInit {
   authService = inject(AuthService);
   updateTransaction: Transaccion | null = null; // Variable para almacenar la transacción a editar
   lastTransaction: Transaccion | null = null;
+  ingresosTotales = 0;
+  gastosTotales = 0;
+  balance = 0;
 
   private dashboardService = inject(DashboardSvc);
 
@@ -96,5 +106,47 @@ export class DashboardComponent implements OnInit {
     this.modalAbierto = true;
     this.updateTransaction = null;
   }
+
+  /**
+   * Carga los totales financieros del usuario
+   * @returns 
+   */
+  loadTotalesFinancieros(uid: string) {
+
+    this.dashboardService.getTransaccionesPorUsuario(uid).then(snapshot => {
+      let ingresos = 0;
+      let gastos = 0;
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const monto = data['monto'];
+        const tipo = data['tipo'];
+
+        if (tipo === 'ingreso') {
+          ingresos += monto;
+        } else {
+          gastos += monto;
+        }
+      });
+
+      this.ingresosTotales = ingresos;
+      this.gastosTotales = gastos;
+      this.balance = ingresos - gastos;
+    });
+  }
+
+  /**
+   * Get the balance information for the user
+   */
+  get balanceInfo() {
+    if (this.balance > 0) {
+      return { class: 'text-green-600 bg-green-100', emoji: '🤑' };
+    } else if (this.balance < 0) {
+      return { class: 'text-red-600 bg-red-100', emoji: '😵‍💫' };
+    } else {
+      return { class: 'text-gray-600 bg-gray-100', emoji: '😐' };
+    }
+  }
+
 
 }
