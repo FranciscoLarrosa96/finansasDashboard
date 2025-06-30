@@ -76,4 +76,13 @@ export class ModalTransaccionComponent {
     this.cerrar.emit();
   }
 
+  /**
+   * Cierra el modal
+   */
+  cerrarModal() {
+    this.cerrar.emit();
+    this.form.reset();
+    this.transaccion = null;
+  }
+
 }

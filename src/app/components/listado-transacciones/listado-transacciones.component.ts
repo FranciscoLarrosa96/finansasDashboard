@@ -1,20 +1,19 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardSvc } from '../../shared/services/dashboard.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { Transaccion } from '../../shared/interfaces/transaction.interface';
-import { Firestore, collection, deleteDoc, doc, getDocs, getFirestore, orderBy, query } from 'firebase/firestore';
-import { ModalTransaccionComponent } from '../modal-transaccion/modal-transaccion.component';
+import { collection, deleteDoc, doc, getDocs, getFirestore, orderBy, query } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 import { User } from 'firebase/auth';
 import Swal from 'sweetalert2';
+import { DashboardSvc } from '../../shared/services/dashboard.service';
 
 
 
 @Component({
   selector: 'app-listado-transacciones',
-  imports: [CommonModule, ModalTransaccionComponent],
+  imports: [CommonModule],
   templateUrl: './listado-transacciones.component.html',
   styleUrl: './listado-transacciones.component.scss'
 })
@@ -26,6 +25,9 @@ export class ListadoTransaccionesComponent implements OnInit {
   transaccionEditando: Transaccion | null = null;
   user: User = {} as User;
   private authService = inject(AuthService);
+  private dashboardService = inject(DashboardSvc);
+  public openEditModal = output<{ transaccion: Transaccion | null }>();
+
   /**
  * Load User effect
  */
@@ -34,6 +36,17 @@ export class ListadoTransaccionesComponent implements OnInit {
     if (this.user.uid !== undefined) {
       const uid = this.user.uid;
       this.cargarTransacciones(uid);
+    }
+  });
+
+  /**
+   * Detecta si hay que refrescar las transacciones
+   * Este efecto se activa cuando el input refreshTransactions cambia
+   */
+  updateTransactions = effect(() => {
+    if (this.dashboardService.refreshTransactionsComputed()) {
+      this.cargarTransacciones();
+      this.dashboardService.refreshTransactionsSignal.set(false); // Resetea el estado de refreshTransactions
     }
   });
 
@@ -58,14 +71,9 @@ export class ListadoTransaccionesComponent implements OnInit {
 
   abrirModal(transaccion: Transaccion | null = null) {
     this.transaccionEditando = transaccion;
-    this.modalAbierto = true;
+    this.openEditModal.emit({ transaccion });
   }
 
-  cerrarModal() {
-    this.modalAbierto = false;
-    this.transaccionEditando = null;
-    this.cargarTransacciones();
-  }
 
   async eliminar(id: string) {
     const confirm = await Swal.fire({
@@ -83,7 +91,7 @@ export class ListadoTransaccionesComponent implements OnInit {
       try {
         const ref = doc(this.db, 'usuarios', this.user.uid, 'transacciones', id);
         await deleteDoc(ref);
-        await this.cargarTransacciones();
+        this.dashboardService.refreshTransactionsSignal.set(true); // Trigger refresh of transactions
 
         Swal.fire({
           icon: 'success',

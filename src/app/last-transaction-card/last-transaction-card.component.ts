@@ -17,6 +17,17 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   imports: [CommonModule, ReactiveFormsModule, NgApexchartsModule],
 })
 export class LastTransactionCardComponent implements OnInit {
+    categorias = [
+  { label: 'Comida', value: 'Comida', icon: '🍔' },
+  { label: 'Transporte', value: 'Transporte', icon: '🚌' },
+  { label: 'Sueldo', value: 'Sueldo', icon: '💸' },
+  { label: 'Juegos', value: 'Juegos', icon: '🎮' },
+  { label: 'Alquiler', value: 'Alquiler', icon: '🏠' },
+  { label: 'Educación', value: 'Educación', icon: '📚' },
+  { label: 'Salud', value: 'Salud', icon: '🩺' },
+  { label: 'Compras', value: 'Compras', icon: '🛍️' },
+  { label: 'Sin categoría', value: 'Sin categoría', icon: '❓' }
+];
   transaction = input<Transaccion | null>();
   modalAbierto = false;
   form!: FormGroup;
@@ -35,7 +46,8 @@ export class LastTransactionCardComponent implements OnInit {
     this.form = this.fb.group({
       descripcion: ['', Validators.required],
       monto: [0, [Validators.required, Validators.min(1)]],
-      tipo: ['ingreso', Validators.required]
+      tipo: ['ingreso', Validators.required],
+      categoria: ['Sin categoría', Validators.required]
     });
 
   }
@@ -49,7 +61,8 @@ export class LastTransactionCardComponent implements OnInit {
     this.form.patchValue({
       descripcion: trans.descripcion,
       monto: trans.monto,
-      tipo: trans.tipo
+      tipo: trans.tipo,
+      categoria: trans.categoria
     });
   }
 
@@ -88,6 +101,7 @@ export class LastTransactionCardComponent implements OnInit {
 
     // Podés recargar la última transacción si querés
     this.dashboardService.getUltimaTransaccion(userId!).subscribe();
+    this.dashboardService.refreshTransactionsSignal.set(true); // Trigger refresh of transactions
   }
 
   async eliminarTransaccion() {

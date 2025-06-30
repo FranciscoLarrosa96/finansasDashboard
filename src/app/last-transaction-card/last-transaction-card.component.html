@@ -10,10 +10,11 @@
       'bg-[var(--secondary-color)]': transaction()?.tipo === 'gasto'
     }">
     <div class="text-3xl">
-      <i [ngClass]="{
-          'fa-solid fa-arrow-up-right-dots': transaction()?.tipo === 'ingreso',
-          'fa-solid fa-arrow-down': transaction()?.tipo === 'gasto'
-        }"></i>
+      @if(transaction()?.tipo === 'ingreso') {
+      <i class="fa-solid fa-arrow-up-right-dots"></i>
+      } @else {
+      <i class="fa-solid fa-arrow-down"></i>
+      }
     </div>
 
     <div class="flex-1">
@@ -71,11 +72,17 @@
         </select>
       </label>
 
+      <label class="block">
+        <span class="text-sm font-medium">Categoría</span>
+        <select formControlName="categoria"
+          class="w-full mt-1 p-2 rounded-lg border border-[var(--border-color)] focus:ring-[var(--main-color)]">
+          <option *ngFor="let c of categorias" [value]="c.value">
+            {{ c.icon }} {{ c.label }}
+          </option>
+        </select>
+      </label>
+
       <div class="flex justify-end gap-3 pt-4">
-        <button type="button" (click)="eliminarTransaccion()"
-          class="px-4 py-2 rounded-xl text-sm font-semibold text-red-600 hover:text-red-800 transition border border-red-300">
-          Eliminar
-        </button>
         <button type="button" (click)="cerrarModal()"
           class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:text-gray-700 transition">
           Cancelar

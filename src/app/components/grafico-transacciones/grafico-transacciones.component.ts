@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, input, OnInit, signal } from '@angular/core';
 import {
   ApexChart, ApexAxisChartSeries, ApexXAxis, ApexYAxis, ApexDataLabels,
   ApexStroke, ApexTitleSubtitle, ApexTooltip, ChartComponent, ApexOptions
@@ -39,6 +39,17 @@ export class GraficoTransaccionesComponent implements OnInit {
     this.uid = this.auth.user()?.uid;
     this.loadTransanctions();
   });
+
+  /**
+   * Dettect update transactions change
+   * This effect will be triggered when the updateTransactions input changes
+   */
+  updateTransactionsEffect = effect(() => {
+    if(this.dashboardSvc.refreshTransactionsComputed()) {
+      this.loadTransanctions();
+    }
+  });
+
   uid: string | undefined = undefined;
   chartBarSeries: ApexAxisChartSeries = [];
   chartBarOptions: Partial<ApexOptions & { xaxis: ApexXAxis }> = {
@@ -65,12 +76,12 @@ export class GraficoTransaccionesComponent implements OnInit {
   };
   private auth = inject(AuthService);
   private dashboardSvc = inject(DashboardSvc);
-
   ngOnInit() {
   }
 
   /**
-   * Load transactions for the user
+   * Load transactions for the user and prepare the charts
+   * - Bar chart for monthly income and expenses
    */
   loadTransanctions() {
     if (!this.uid) return;

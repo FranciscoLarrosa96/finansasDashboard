@@ -94,14 +94,18 @@ export class AuthService {
 
 
 
+    /**
+     * Crea una transacción inicial para un nuevo usuario
+     * @param userId 
+     */
     private async crearTransaccionInicial(userId: string) {
         const transaccionesRef = collection(this.db, 'usuarios', userId, 'transacciones');
         await addDoc(transaccionesRef, {
-            descripcion: 'Transacción inicial',
+            descripcion: 'Transacción de muestra',
             tipo: 'ingreso',
-            monto: 0,
+            monto: 1000,
             fecha: new Date(),
-            categoria: 'Inicial',
+            categoria: 'Comida',
         });
     }
 }
